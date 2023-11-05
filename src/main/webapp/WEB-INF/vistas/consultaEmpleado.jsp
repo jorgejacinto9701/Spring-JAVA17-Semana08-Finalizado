@@ -19,69 +19,68 @@
 	<div class="container">
 		<h3>Consulta Empleado</h3>
 		<div class="row" style="margin-top: 3%">
-			<div class="col-md-6">
-				<label class="control-label" for="id_nombres">Nombres y	Apellidos</label> 
-				<input class="form-control" type="text" id="id_nombres"	name="nombres">
-			</div>
-			<div class="col-md-6">
-				<label class="control-label" for="id_estado">Estado</label> 
-				<input class="form-control" type="checkbox" id="id_estado" name="estado" checked="checked">
-			</div>
+				<div class="col-lg-6">
+					<label class="control-label" for="id_nombre">Nombres y Apellidos</label>
+					<input type="text" class="form-control" id="id_nombre" name="nombre">	  
+				</div>
+				<div class="col-lg-6">
+					<label class="control-label" for="id_estado">Estado</label>
+					<input type="checkbox" class="form-control" id="id_estado" name="estado" checked="checked" >
+				</div>
 		</div>
 		<div class="row" style="margin-top: 2%">
-			<div class="col-md-6">
-				<label class="control-label" for="id_desde">Fecha Nacimiento (Desde) </label> 
-				<input class="form-control" type="date" id="id_desde" name="fechaDesde">
-			</div>
-			<div class="col-md-6">
-				<label class="control-label" for="id_hasta">(Hasta) </label> 
-				<input class="form-control" type="date" id="id_hasta" name="fechaHasta">
-			</div>
+				<div class="col-lg-6">
+					<label class="control-label" for="id_desde">Fecha Nacimiento (Desde)</label>
+					<input type="date" class="form-control" id="id_desde" name="desde">	  
+				</div>
+				<div class="col-lg-6">
+					<label class="control-label" for="id_hasta">(Hasta)</label>
+					<input type="date" class="form-control" id="id_hasta" name="hasta">
+				</div>
 		</div>
 		<div class="row" style="margin-top: 2%">
-			<div class="col-md-6">
-				<label class="control-label" for="id_pais">País</label> 
-				<select id="id_pais" name="pais" class='form-control'>
-					<option value="-1">[ Todos ]</option>
-				</select>
-			</div>
+				<div class="col-lg-6">
+					<label class="control-label" for="id_pais">País</label>
+					<select id="id_pais" name="pais" class='form-control'>
+						<option value="-1"> [ Todos ] </option>    
+					</select>
+				</div>
+		</div>
+		<div class="row" style="margin-top: 2%">
+				<div class="col-lg-12" align="center" >
+						<button type="button" class="btn btn-primary" id="id_btn_filtrar">FILTRAR</button>
+				</div>
 		</div>
 		<div class="row" style="margin-top: 3%">
-			<div class="col-md-12" align="center">
-				<button type="button" class="btn btn-primary" id="id_btn_filtra">FILTRA</button>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 3%">
-			<div class="col-md-12">
-				<table id="id_table" class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="width: 5%">ID</th>
-							<th style="width: 22%">Nombre</th>
-							<th style="width: 23%">Apellidos</th>
-							<th style="width: 15%">Fecha Nacimiento</th>
-							<th style="width: 15%">País</th>
-							<th style="width: 15%">Estado</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-		</div>
+				<div class="col-lg-12">
+						<table id="id_table" class="table table-striped table-bordered" >
+							<thead>
+								<tr>
+									<th style="width: 5%" >ID</th>
+									<th style="width: 22%">Nombre</th>
+									<th style="width: 23%">Apellidos</th>
+									<th style="width: 15%">Fecha Nacimiento</th>
+									<th style="width: 15%">País</th>
+									<th style="width: 10%">Estado</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+				</div>
+		</div>		
 	</div>
-<script type="text/javascript">
 
+<script type="text/javascript">
 $.getJSON("listaPais", {}, function(data){
 	$.each(data, function(i,item){
 		$("#id_pais").append("<option value="+item.idPais +">"+ item.nombre +"</option>");
 	});
 });
 
-$("#id_btn_filtra").click(function(){
-	var varEstado = $("#id_estado").is(':checked') ? 1 : 0;  
+$("#id_btn_filtrar").click(function (){ 
+	var varEstado = $("#id_estado").is(':checked') ? 1 : 0;
 	var varPais = $("#id_pais").val();
-	var varNomApe = $("#id_nombres").val();
+	var varNomApe = $("#id_nombre").val();
 	var varFecDesde = $("#id_desde").val() == '' ?'1900-01-01' : $("#id_desde").val();
 	var varFecHasta = $("#id_hasta").val() == '' ?'9999-01-01' : $("#id_hasta").val();
 	
@@ -91,20 +90,14 @@ $("#id_btn_filtra").click(function(){
 	console.log(">> varFecDesde >> " + varFecDesde );
 	console.log(">> varFecHasta >> " + varFecHasta );
 	
-	if (valFechaInicioMayFechaFin("#id_desde", "#id_hasta")){
-		mostrarMensaje("La fecha hasta es superior a la fecha desde");
-		return;
-	}
-	
-	$.getJSON("consultaEmpleado", {"estado": varEstado, 
-								   "idPais": varPais, 
-								   "nomApe": varNomApe, 
-								   "fecDesde": varFecDesde, 
-								   "fecHasta": varFecHasta }, function(data){
-		agregarGrilla(data);
+	$.getJSON("consultaEmpleado", {"estado":varEstado, 
+								   "idPais":varPais, 
+								   "nomApe":varNomApe,
+								   "desde": varFecDesde, 
+								   "hasta": varFecHasta}, function(lista){
+		agregarGrilla(lista);
 	});
 });
-
 
 function agregarGrilla(lista){
 	 $('#id_table').DataTable().clear();
@@ -123,7 +116,7 @@ function agregarGrilla(lista){
 				{data: "fechaNacimiento"},
 				{data: "pais.nombre"},
 				{data: function(row, type, val, meta){
-					var salida = (row.estado == 1) ? 'Activo' : "Inactivo" ;
+					var salida= (row.estado == 1) ? 'Activo' : 'Inactivo';
 					return salida;
 				},className:'text-center'},	
 			]                                     
@@ -131,7 +124,6 @@ function agregarGrilla(lista){
 }
 
 </script>
-
 </body>
 </html>
 

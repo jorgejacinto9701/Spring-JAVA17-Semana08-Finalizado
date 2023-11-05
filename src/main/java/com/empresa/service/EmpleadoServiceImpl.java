@@ -47,8 +47,8 @@ public class EmpleadoServiceImpl implements EmpleadoService{
 	}
 
 	@Override
-	public List<Empleado> listaConsultaEmpleado(int estado, int idPais,String nomApe, Date fecDesde, Date fecHasta) {
-		return repository.listaConsultaEmpleado(estado, idPais, nomApe, fecDesde, fecHasta);
+	public List<Empleado> listaConsultaEmpleado(int estado, int idPais, String nomApe, Date desde, Date hasta) {
+		return repository.listaConsultaEmpleado(estado, idPais, nomApe, desde, hasta);
 	}
 
 }
